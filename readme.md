@@ -1,32 +1,26 @@
 A project from this site: https://www.geeksforgeeks.org/java-projects/
 
----
-Setup:
----
+# Setup
 
-$ docker-compose build
+$ docker-compose build  
 $ docker-compose up -d
 
-When you're done:
+When you're done:  
 $ docker-compose down
 
----
-Deployment
----
+# Deployment
 
 Go to http://localhost:3000/
 
 To see some test data, login with the username Alice
 
----
-Overview:
----
+# Overview
 
-30. Online Cab Booking System 
+### 30. Online Cab Booking System 
 Ola and Uber are the online cab booking systems that almost every one of us has used. 
 So building such a Java application would be the best idea. 
 
-Abstract: 
+Abstract:
 In this project, the main objective is to help customers in booking a cab to reach their destination 
 with pick-up as their preferred location. The application fetches your pick-up location and asks you 
 to enter the drop location, when entered, finds a cab driver nearby and even tells you the calculated 
@@ -37,7 +31,7 @@ Technologies: Java, HTML, CSS, JavaScript, JSP, JDBC, Java Spring, Java Servlet,
 I used JPA instead of JDBC because that's what our training asks for.
 I used React instead of JSP because our training asks for SaaS and APIs.
 
-Breakdown:
+### Breakdown:
 - book a cab
 	- pickup location
 	- destination location
@@ -46,17 +40,17 @@ Breakdown:
 - calculate ETA
 	- time to reach user + time to reach destination
 
-MVP+1 done
+### MVP+1 done
 - format ETA 
 - make Booking form look a little nicer
 - make it deployable on docker
 	
-MVP+1 todo
+### MVP+1 todo
 - login page
-	Guide:
-	https://www.udemy.com/course/spring-boot-and-spring-framework-tutorial-for-beginners/learn/lecture/35017828#reviews
-	252. Step 11 (Section 12)
-	Section 7 has: jsp, spring security
+	- Guides:
+	- https://www.udemy.com/course/spring-boot-and-spring-framework-tutorial-for-beginners/learn/lecture/35017828
+	- video: 252. Step 11 (Section 12)
+	- Section 7 has: jsp, spring security
 - update/cancel booking
 - booking status, e.g. "en route to customer", "transporting to destination"
 - driver status to prevent booking a driver that's enroute

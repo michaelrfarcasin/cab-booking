@@ -1,0 +1,30 @@
+services:
+    mysql:
+        build: 
+            context: ./mysql
+            dockerfile: ./Dockerfile
+        ports:
+            - "3306:3306"
+        networks:
+            - cab-booking
+        volumes:
+            - ./mysql/sql-scripts:/docker-entrypoint-initdb.d
+    cab-frontend:
+        build: 
+            context: ./frontend
+            dockerfile: ./Dockerfile
+        ports:
+            - "3000:3000"
+        networks:
+            - cab-booking
+    cab-backend:
+        build: 
+            context: ./backend
+            dockerfile: ./Dockerfile
+        ports:
+            - "8080:8080"
+        networks:
+            - cab-booking
+
+networks:
+    cab-booking:

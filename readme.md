@@ -12,7 +12,7 @@ $ docker-compose down
 
 Go to http://localhost:3000/
 
-To see some test data, login with the username Alice
+To see some test data, login with the username Alice (no password)
 
 # Overview
 

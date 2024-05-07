@@ -1,5 +1,3 @@
-A project from this site: https://www.geeksforgeeks.org/java-projects/
-
 # Setup
 
 $ docker-compose build  
@@ -16,6 +14,8 @@ To see some test data, login with the username Alice (no password)
 
 # Overview
 
+https://www.geeksforgeeks.org/java-projects/
+
 ### 30. Online Cab Booking System 
 Ola and Uber are the online cab booking systems that almost every one of us has used. 
 So building such a Java application would be the best idea. 
@@ -28,8 +28,7 @@ time the cab will take to drop you at the location.
 The system is designed using Spring MVC, Servlets, Hibernate, JDBC, JSP, HTML, and CSS. 
 
 Technologies: Java, HTML, CSS, JavaScript, JSP, JDBC, Java Spring, Java Servlet, MySQL, and Tomcat Server.
-I used JPA instead of JDBC because that's what our training asks for.
-I used React instead of JSP because our training asks for SaaS and APIs.
+I used JPA instead of JDBC and React instead of JSP for my own practice.
 
 ### Breakdown:
 - book a cab

@@ -56,7 +56,7 @@ I used React instead of JSP because our training asks for SaaS and APIs.
 - driver status to prevent booking a driver that's enroute
 - have drivers specific to a given region
 - implement builder pattern
-- replace create a Location data structure for Booking/Driver instead of business object
+- create a Location data structure for Booking/Driver instead of business object
 - make each controller a microservice
 - swagger documentation
 - hateoas

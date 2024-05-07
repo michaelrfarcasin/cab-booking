@@ -30,7 +30,7 @@ The system is designed using Spring MVC, Servlets, Hibernate, JDBC, JSP, HTML, a
 Technologies: Java, HTML, CSS, JavaScript, JSP, JDBC, Java Spring, Java Servlet, MySQL, and Tomcat Server.
 I used JPA instead of JDBC and React instead of JSP for my own practice.
 
-### Breakdown:
+### MVP Breakdown:
 - book a cab
 	- pickup location
 	- destination location
@@ -38,6 +38,7 @@ I used JPA instead of JDBC and React instead of JSP for my own practice.
 - find nearby cab
 - calculate ETA
 	- time to reach user + time to reach destination
+- display booking with ETA to user
 
 ### MVP+1 done
 - format ETA 

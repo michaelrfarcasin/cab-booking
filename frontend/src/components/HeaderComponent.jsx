@@ -15,6 +15,9 @@ const HeaderComponent = () => {
                             {isAuthenticated && <li className="nav-item fs-5">
                                 <Link className="nav-link" to="/">Home</Link>
                             </li>}
+                            {!isAuthenticated && <li className="nav-item fs-5">
+                                <span className="Title">Cab Booking</span>
+                            </li>}
                         </ul>
                     </div>
                     <ul className="navbar-nav">

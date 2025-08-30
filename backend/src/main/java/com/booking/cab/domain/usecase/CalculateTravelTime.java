@@ -15,7 +15,7 @@ public class CalculateTravelTime {
 		Location lastLocation = locations[0];
 		for (Location location : locations) {
 			double distance = lastLocation.distanceTo(location);
-			travelTime += distance * 100;
+			travelTime += distance * 100; // a trivial calculation for demo purposes only
 			lastLocation = location;
 		}
 		

@@ -1,7 +1,8 @@
 package com.booking.cab.web.integration;
 
-import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.booking.cab.domain.datastructure.BookingRequest;
@@ -23,6 +25,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = Replace.ANY)
+@WithMockUser(username = "Alice")
 class BookingControllerTest {
 
 	MockMvc mockMvc;
@@ -54,7 +57,12 @@ class BookingControllerTest {
 		request.setDropOffLatitude(39.7392);
 		request.setDropOffLongitude(-104.9903);
 		String jsonString = toJson(request);
-		this.mockMvc.perform(post("/booking/request/Alice").content(jsonString).contentType("application/json"))
+		this.mockMvc.perform(
+				post("/booking/request/Alice")
+				.content(jsonString)
+				.contentType("application/json")
+				.with(csrf())
+			)
 			.andExpect(status().isCreated());
 	}
 

@@ -13,8 +13,8 @@ const LoginComponent = () => {
     
     const handlePasswordChange = (event) => setPassword(event.target.value)
     
-    const handleSubmit = () => {
-        if (authContext.login(username, password)) {
+    const handleSubmit = async () => {
+        if (await authContext.login(username, password)) {
             setShowErrorMessage(false)
             navigate('/')
             return
@@ -25,7 +25,7 @@ const LoginComponent = () => {
     return (
         <div className="Login">
             {showErrorMessage && <div className="errorMessage">
-                Authentication Failed. Please Check your credentials.
+                Authentication Failed. Please check your credentials.
             </div>}
             <div className="LoginForm">
                 <div>

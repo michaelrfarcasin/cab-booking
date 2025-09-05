@@ -13,8 +13,13 @@ const HomeComponent = () => {
 
     useEffect(() => {
         getBookingsForUser(username)
-            .then((response) => setBookings(response.data))
-            .catch((error) => console.log(error))
+            .then((response) => {
+                if (!Array.isArray(response.data)) {
+                    throw new Error("Unexpected response from getBookingsForUser: " + response.data);
+                }
+                setBookings(response.data)
+            })
+            .catch((error) => console.error(error))
     }, [username])
 
     return (

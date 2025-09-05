@@ -10,7 +10,7 @@ $ docker-compose down
 
 Go to http://localhost:3000/
 
-To see some test data, login with the username Alice (no password)
+To see some test data, login with the username Alice, password dummy
 
 # Overview
 
@@ -44,13 +44,9 @@ I used JPA instead of JDBC and React instead of JSP for my own practice.
 - format ETA 
 - make Booking form look a little nicer
 - make it deployable on docker
+- login page
 	
 ### MVP+1 todo
-- login page
-	- Guides:
-	- https://www.udemy.com/course/spring-boot-and-spring-framework-tutorial-for-beginners/learn/lecture/35017828
-	- video: 252. Step 11 (Section 12)
-	- Section 7 has: jsp, spring security
 - update/cancel booking
 - booking status, e.g. "en route to customer", "transporting to destination"
 - driver status to prevent booking a driver that's enroute
@@ -60,3 +56,5 @@ I used JPA instead of JDBC and React instead of JSP for my own practice.
 - make each controller a microservice
 - swagger documentation
 - hateoas
+
+Guide used in building this project: https://www.udemy.com/course/spring-boot-and-spring-framework-tutorial-for-beginners/

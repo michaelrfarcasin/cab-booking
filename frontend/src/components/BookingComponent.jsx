@@ -26,7 +26,7 @@ const BookingComponent = () => {
 
         addBookingForUser(username, booking)
             .then(response => navigate('/'))
-            .catch(error => console.log(error))
+            .catch(error => console.error(error))
     }
 
     const validate = (values) => {

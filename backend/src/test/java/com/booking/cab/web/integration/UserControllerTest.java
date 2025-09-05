@@ -1,8 +1,9 @@
 package com.booking.cab.web.integration;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.booking.cab.domain.datastructure.User;
@@ -21,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = Replace.ANY)
+@WithMockUser(username = "Alice")
 class UserControllerTest {
 
 	MockMvc mockMvc;
@@ -52,7 +55,12 @@ class UserControllerTest {
 		User user = new User(123, "");
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonString = mapper.writeValueAsString(user);
-		this.mockMvc.perform(post("/user").content(jsonString).contentType("application/json"))
+		this.mockMvc.perform(
+			post("/user")
+			.content(jsonString)
+			.contentType("application/json")
+			.with(csrf())
+		)
 		.andExpect(status().isBadRequest());
 	}
 
@@ -61,10 +69,20 @@ class UserControllerTest {
 		User user = new User(123, "TestUser");
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonString = mapper.writeValueAsString(user);
-		this.mockMvc.perform(post("/user").content(jsonString).contentType("application/json"))
-			.andExpect(status().isCreated());		
-		this.mockMvc.perform(delete("/user/123").content(jsonString).contentType("application/json"))
-			.andExpect(status().isOk());
+		this.mockMvc.perform(
+			post("/user")
+			.content(jsonString)
+			.contentType("application/json")
+			.with(csrf())
+		)
+		.andExpect(status().isCreated());		
+		this.mockMvc.perform(
+			delete("/user/123")
+			.content(jsonString)
+			.contentType("application/json")
+			.with(csrf())
+		)
+		.andExpect(status().isOk());
 		
 	}
 

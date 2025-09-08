@@ -1,5 +1,5 @@
-INSERT INTO user_details (name) VALUES ('Alice');
-INSERT INTO user_details (name) VALUES ('Bob');
+INSERT INTO user_details (username, password, roles, enabled) VALUES ('Alice', '$2a$10$KjZzjwezAnpcGnJ1C107A.teRDoekfX4TYt6n94YrMglHGxRuygWW', 'USER', true);
+INSERT INTO user_details (username, password, roles, enabled) VALUES ('Bob', '$2a$10$KjZzjwezAnpcGnJ1C107A.teRDoekfX4TYt6n94YrMglHGxRuygWW', 'USER', true);
 
 INSERT INTO driver (name, latitude, longitude) VALUES ('Alpha', 39.7294, -104.8319);
 INSERT INTO driver (name, latitude, longitude) VALUES ('Bravo', 39.7392, -104.9903);

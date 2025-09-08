@@ -2,13 +2,13 @@ package com.booking.cab.domain.gateway;
 
 import java.util.List;
 
-import com.booking.cab.domain.datastructure.User;
+import com.booking.cab.repository.entity.User;
 
 public interface UserGatewayInterface {
 
 	User findById(int id);
 
-	User findByName(String name);
+	User findByUsername(String username);
 	
 	List<User> findAll();
 

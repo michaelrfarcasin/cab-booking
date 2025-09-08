@@ -14,15 +14,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.booking.cab.domain.businessobject.Location;
-import com.booking.cab.domain.datastructure.Booking;
-import com.booking.cab.domain.datastructure.BookingRequest;
-import com.booking.cab.domain.datastructure.Driver;
 import com.booking.cab.domain.gateway.BookingGatewayInterface;
 import com.booking.cab.domain.usecase.CalculateTravelTime;
 import com.booking.cab.domain.usecase.CreateBooking;
 import com.booking.cab.domain.usecase.GetClosestDriver;
 import com.booking.cab.domain.usecase.GetNow;
 import com.booking.cab.exception.DriverNotFoundException;
+import com.booking.cab.repository.entity.Booking;
+import com.booking.cab.repository.entity.BookingRequest;
+import com.booking.cab.repository.entity.Driver;
 
 @ExtendWith(MockitoExtension.class)
 class CreateBookingTest {

@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.booking.cab.domain.businessobject.Location;
-import com.booking.cab.domain.datastructure.Booking;
-import com.booking.cab.domain.datastructure.BookingRequest;
-import com.booking.cab.domain.datastructure.Driver;
 import com.booking.cab.domain.gateway.BookingGatewayInterface;
+import com.booking.cab.repository.entity.Booking;
+import com.booking.cab.repository.entity.BookingRequest;
+import com.booking.cab.repository.entity.Driver;
 
 @Service
 public class CreateBooking {

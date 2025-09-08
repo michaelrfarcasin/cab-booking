@@ -5,6 +5,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,29 +18,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.booking.cab.domain.datastructure.User;
 import com.booking.cab.domain.gateway.UserGatewayInterface;
 import com.booking.cab.exception.UserNotFoundException;
+import com.booking.cab.repository.entity.User;
+import com.booking.cab.security.datastructure.JwtTokenRequest;
+import com.booking.cab.security.service.BookingUserDetailsService;
+import com.booking.cab.security.service.JwtTokenService;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
-	
 	private UserGatewayInterface userGateway;
+	private BookingUserDetailsService userDetailsService;
+	private JwtTokenService tokenService;
+	private AuthenticationManager authenticationManager;
 	
-	@Autowired
-	public UserController(UserGatewayInterface userGateway) {
-		super();
+	public UserController(
+		UserGatewayInterface userGateway, 
+		BookingUserDetailsService userDetailsService,
+		JwtTokenService tokenService, 
+		AuthenticationManager authenticationManager
+	) {
 		this.userGateway = userGateway;
+		this.userDetailsService = userDetailsService;
+		this.tokenService = tokenService;
+		this.authenticationManager = authenticationManager;
 	}
 
-	@GetMapping
-	public List<User> getUsers() {
-		return userGateway.findAll();
-	}
-	
 	@GetMapping("/{id}")
 	public User getUser(@PathVariable int id) {
 		User user = userGateway.findById(id);
@@ -46,20 +56,31 @@ public class UserController {
 		return user;
 	}
 	
-	@PostMapping
+	@PostMapping("/register")
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-		User savedUser = userGateway.save(user);
+		User savedUser = userDetailsService.addUser(user);
 		URI nextUri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}")
 				.buildAndExpand(savedUser.getId())
 				.toUri();
 		return ResponseEntity.created(nextUri).build();
 	}
-	
+
+	@PostMapping("/generateToken")
+	public ResponseEntity<String> authenticateAndGetToken(@RequestBody JwtTokenRequest request) {
+		Authentication authentication = authenticationManager.authenticate(
+			new UsernamePasswordAuthenticationToken(request.username(), request.password())
+		);
+		if (authentication.isAuthenticated()) {
+			String token = tokenService.generateToken(request.username());
+			return ResponseEntity.ok(token);
+		}
+		throw new UsernameNotFoundException("Invalid user request");
+	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<User> deleteUser(@PathVariable int id) {
 		userGateway.deleteById(id);
 		return ResponseEntity.ok().build();
 	}
-
 }

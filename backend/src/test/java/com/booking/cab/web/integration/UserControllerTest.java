@@ -17,13 +17,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.booking.cab.domain.datastructure.User;
+import com.booking.cab.repository.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = Replace.ANY)
-@WithMockUser(username = "Alice")
+@WithMockUser(username = "Alice", password = "dummy")
 class UserControllerTest {
 
 	MockMvc mockMvc;
@@ -52,11 +52,11 @@ class UserControllerTest {
 	
 	@Test
 	void createUser_blankName_returnsError() throws Exception {
-		User user = new User(123, "");
+		User user = new User(123, "", "", "", true);
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonString = mapper.writeValueAsString(user);
 		this.mockMvc.perform(
-			post("/user")
+			post("/user/register")
 			.content(jsonString)
 			.contentType("application/json")
 			.with(csrf())
@@ -66,11 +66,11 @@ class UserControllerTest {
 
 	@Test
 	void createUser_valid() throws Exception {
-		User user = new User(123, "TestUser");
+		User user = new User(123, "TestUser", "testpass", "USER", true);
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonString = mapper.writeValueAsString(user);
 		this.mockMvc.perform(
-			post("/user")
+			post("/user/register")
 			.content(jsonString)
 			.contentType("application/json")
 			.with(csrf())
@@ -83,7 +83,6 @@ class UserControllerTest {
 			.with(csrf())
 		)
 		.andExpect(status().isOk());
-		
 	}
 
 }

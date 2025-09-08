@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.booking.cab.domain.businessobject.Location;
-import com.booking.cab.domain.datastructure.Driver;
 import com.booking.cab.domain.gateway.DriverGatewayInterface;
 import com.booking.cab.exception.DriverNotFoundException;
+import com.booking.cab.repository.entity.Driver;
 
 @Service
 public class GetClosestDriver {

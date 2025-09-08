@@ -1,3 +1,3 @@
-package com.booking.cab.jwt;
+package com.booking.cab.security.datastructure;
 
 public record JwtTokenRequest(String username, String password) {}

@@ -17,7 +17,7 @@ const AuthProvider = ({ children }) => {
             if (response.status === HttpStatusCode.Ok) {
                 setAuthenticated(true)
                 setUsername(username)
-                const authToken = 'Bearer ' + response.data.token
+                const authToken = 'Bearer ' + response.data
                 apiClient.interceptors.request.use(
                     (config) => {
                         config.headers.Authorization = authToken

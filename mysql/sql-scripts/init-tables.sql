@@ -1,7 +1,18 @@
 CREATE TABLE user_details (
 	id INT NOT NULL AUTO_INCREMENT, 
-	name VARCHAR(255) NOT NULL DEFAULT '', 
+	username VARCHAR(255) NOT NULL UNIQUE, 
+	password VARCHAR(255) NOT NULL DEFAULT '', 
+	roles VARCHAR(255) NOT NULL DEFAULT '', 
+	enabled BOOLEAN NOT NULL DEFAULT 1,
 	PRIMARY KEY (id)
+);
+
+CREATE TABLE authorities (
+	id INT NOT NULL AUTO_INCREMENT,
+	username VARCHAR(255) NOT NULL DEFAULT '',
+	authority VARCHAR(255) NOT NULL DEFAULT '',
+	PRIMARY KEY (id),
+    FOREIGN KEY (username) REFERENCES user_details(username) ON DELETE CASCADE
 );
 
 CREATE TABLE driver (
@@ -37,8 +48,8 @@ CREATE TABLE booking (
     FOREIGN KEY (driver_id) REFERENCES driver(id) ON DELETE CASCADE
 );
 
-INSERT INTO user_details (name) VALUES ('Alice');
-INSERT INTO user_details (name) VALUES ('Bob');
+INSERT INTO user_details (username, password, roles, enabled) VALUES ('Alice', '$2a$10$KjZzjwezAnpcGnJ1C107A.teRDoekfX4TYt6n94YrMglHGxRuygWW', 'USER', true);
+INSERT INTO user_details (username, password, roles, enabled) VALUES ('Bob', '$2a$10$KjZzjwezAnpcGnJ1C107A.teRDoekfX4TYt6n94YrMglHGxRuygWW', 'USER', true);
 
 INSERT INTO driver (name, latitude, longitude) VALUES ('Alpha', 39.7294, -104.8319);
 INSERT INTO driver (name, latitude, longitude) VALUES ('Bravo', 39.7392, -104.9903);

@@ -13,20 +13,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.booking.cab.domain.datastructure.Booking;
-import com.booking.cab.domain.datastructure.BookingRequest;
-import com.booking.cab.domain.datastructure.User;
 import com.booking.cab.domain.gateway.BookingGatewayInterface;
 import com.booking.cab.domain.gateway.UserGatewayInterface;
 import com.booking.cab.domain.usecase.CreateBooking;
 import com.booking.cab.exception.UserNotFoundException;
+import com.booking.cab.repository.entity.Booking;
+import com.booking.cab.repository.entity.BookingRequest;
+import com.booking.cab.repository.entity.User;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/booking")
 public class BookingController {
-
 	private UserGatewayInterface userGateway;
 	
 	private BookingGatewayInterface bookingGateway;
@@ -38,7 +37,6 @@ public class BookingController {
 			UserGatewayInterface userGateway, 
 			BookingGatewayInterface bookingGateway, 
 			CreateBooking createBooking) {
-		super();
 		this.userGateway = userGateway;
 		this.bookingGateway = bookingGateway;
 		this.createBooking = createBooking;
@@ -52,7 +50,7 @@ public class BookingController {
 	}
 	
 	private int getIdForUser(String name) {
-		User user = userGateway.findByName(name);
+		User user = userGateway.findByUsername(name);
 		if (user == null) {
 			throw new UserNotFoundException("Name: " + name);
 		}
@@ -73,5 +71,4 @@ public class BookingController {
 				.toUri();
 		return ResponseEntity.created(nextUri).build();
 	}
-
 }

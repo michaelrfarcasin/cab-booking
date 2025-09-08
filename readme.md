@@ -1,6 +1,6 @@
 # Setup
 
-$ docker-compose build  
+$ docker-compose build
 $ docker-compose up -d
 
 When you're done:  
@@ -25,10 +25,16 @@ In this project, the main objective is to help customers in booking a cab to rea
 with pick-up as their preferred location. The application fetches your pick-up location and asks you 
 to enter the drop location, when entered, finds a cab driver nearby and even tells you the calculated 
 time the cab will take to drop you at the location. 
-The system is designed using Spring MVC, Servlets, Hibernate, JDBC, JSP, HTML, and CSS. 
 
-Technologies: Java, HTML, CSS, JavaScript, JSP, JDBC, Java Spring, Java Servlet, MySQL, and Tomcat Server.
-I used JPA instead of JDBC and React instead of JSP for my own practice.
+Technologies: Java, HTML, CSS, JavaScript, JSP, JDBC, JWT, Java Spring, Java Servlet, MySQL, and 
+Tomcat Server.
+
+### Development
+To create a local mysql server for testing, use this command: 
+
+```
+docker run --detach --env MYSQL_ROOT_PASSWORD=dummypassword --env MYSQL_USER=booking-user --env MYSQL_PASSWORD=dummypassword --env MYSQL_DATABASE=booking-database --name mysql --publish 3306:3306 mysql:8-oracle
+```
 
 ### MVP Breakdown:
 - book a cab

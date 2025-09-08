@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.not;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -17,7 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.booking.cab.domain.datastructure.BookingRequest;
+import com.booking.cab.repository.entity.BookingRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -44,11 +45,13 @@ class BookingControllerTest {
 	
 	@Test
 	void getBookingsForUser() throws Exception {
-		this.mockMvc.perform(get("/booking/user/Alice")).andExpect(status().isOk())
+		this.mockMvc.perform(get("/booking/user/Alice"))
+			.andDo(print())
+			.andExpect(status().isOk())
 			.andExpect(content().string(containsString("Alpha")))
 			.andExpect(content().string(not(containsString("Charlie"))));
 	}
-	
+
 	@Test
 	void requestBooking() throws Exception {
 		BookingRequest request = new BookingRequest();
@@ -63,6 +66,7 @@ class BookingControllerTest {
 				.contentType("application/json")
 				.with(csrf())
 			)
+			.andDo(print())
 			.andExpect(status().isCreated());
 	}
 

@@ -2,7 +2,7 @@ package com.booking.cab.domain.gateway;
 
 import java.util.List;
 
-import com.booking.cab.domain.datastructure.Booking;
+import com.booking.cab.repository.entity.Booking;
 
 public interface BookingGatewayInterface {
 

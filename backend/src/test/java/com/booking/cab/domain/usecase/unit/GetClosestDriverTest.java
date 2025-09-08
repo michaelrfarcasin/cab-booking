@@ -14,10 +14,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.booking.cab.domain.businessobject.Location;
-import com.booking.cab.domain.datastructure.Driver;
 import com.booking.cab.domain.gateway.DriverGatewayInterface;
 import com.booking.cab.domain.usecase.GetClosestDriver;
 import com.booking.cab.exception.DriverNotFoundException;
+import com.booking.cab.repository.entity.Driver;
 
 @ExtendWith(MockitoExtension.class)
 class GetClosestDriverTest {

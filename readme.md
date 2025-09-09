@@ -47,6 +47,7 @@ docker run --detach --env MYSQL_ROOT_PASSWORD=dummypassword --env MYSQL_USER=boo
 - display booking with ETA to user
 
 ### MVP+1 done
+- add frontend error messages for exceptions and error responses
 - format ETA 
 - make Booking form look a little nicer
 - make it deployable on docker

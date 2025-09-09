@@ -7,14 +7,6 @@ CREATE TABLE user_details (
 	PRIMARY KEY (id)
 );
 
-CREATE TABLE authorities (
-	id INT NOT NULL AUTO_INCREMENT,
-	username VARCHAR(255) NOT NULL DEFAULT '',
-	authority VARCHAR(255) NOT NULL DEFAULT '',
-	PRIMARY KEY (id),
-    FOREIGN KEY (username) REFERENCES user_details(username) ON DELETE CASCADE
-);
-
 CREATE TABLE driver (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL DEFAULT '',

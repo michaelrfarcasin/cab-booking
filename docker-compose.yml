@@ -1,14 +1,34 @@
 services:
-    mysql:
-        build: 
-            context: ./mysql
+    mysql-auth:
+        build:
+            context: ./mysql/auth
             dockerfile: ./Dockerfile
         ports:
-            - "3306:3306"
+            - "3307:3306"
         networks:
             - cab-booking
         volumes:
-            - ./mysql/sql-scripts:/docker-entrypoint-initdb.d
+            - ./mysql/auth/sql-scripts:/docker-entrypoint-initdb.d
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 5s
+            timeout: 5s
+            retries: 10
+    mysql-booking:
+        build:
+            context: ./mysql/booking
+            dockerfile: ./Dockerfile
+        ports:
+            - "3308:3306"
+        networks:
+            - cab-booking
+        volumes:
+            - ./mysql/booking/sql-scripts:/docker-entrypoint-initdb.d
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 5s
+            timeout: 5s
+            retries: 10
     cab-frontend:
         build: 
             context: ./frontend
@@ -17,14 +37,28 @@ services:
             - "3000:3000"
         networks:
             - cab-booking
-    cab-backend:
+    auth-service:
         build: 
-            context: ./backend
+            context: ./backend/auth-service
             dockerfile: ./Dockerfile
         ports:
-            - "8080:8080"
+            - "8081:8080"
         networks:
             - cab-booking
+        depends_on:
+            mysql-auth:
+                condition: service_healthy
+    booking-service:
+        build: 
+            context: ./backend/booking-service
+            dockerfile: ./Dockerfile
+        ports:
+            - "8082:8080"
+        networks:
+            - cab-booking
+        depends_on:
+            mysql-booking:
+                condition: service_healthy
 
 networks:
     cab-booking:

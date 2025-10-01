@@ -1,7 +1,7 @@
-import { createContext, useContext, useState } from "react";
-import { executeJwtAuthenticationService } from "../api/AuthApiService";
 import { HttpStatusCode } from "axios";
-import apiClient from "../api/ApiClientService";
+import { createContext, useContext, useState } from "react";
+import { apiClient as authApiClient, executeJwtAuthenticationService } from "../api/AuthApiService";
+import { apiClient as bookingApiClient } from "../api/BookingApiService";
 
 export const AuthContext = createContext()
 
@@ -18,7 +18,13 @@ const AuthProvider = ({ children }) => {
                 setAuthenticated(true)
                 setUsername(username)
                 const authToken = 'Bearer ' + response.data
-                apiClient.interceptors.request.use(
+                authApiClient.interceptors.request.use(
+                    (config) => {
+                        config.headers.Authorization = authToken
+                        return config
+                    }
+                )
+                bookingApiClient.interceptors.request.use(
                     (config) => {
                         config.headers.Authorization = authToken
                         return config

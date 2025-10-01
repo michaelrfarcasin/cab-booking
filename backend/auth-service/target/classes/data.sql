@@ -1,0 +1,2 @@
+INSERT INTO user_details (username, password, roles, enabled) VALUES ('Alice', '$2a$10$KjZzjwezAnpcGnJ1C107A.teRDoekfX4TYt6n94YrMglHGxRuygWW', 'USER', true);
+INSERT INTO user_details (username, password, roles, enabled) VALUES ('Bob', '$2a$10$KjZzjwezAnpcGnJ1C107A.teRDoekfX4TYt6n94YrMglHGxRuygWW', 'USER', true);

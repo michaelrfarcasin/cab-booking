@@ -1,5 +1,9 @@
-import apiClient from "./ApiClientService"
+import axios from "axios"
 
-export const getBookingsForUser = (name) => apiClient.get(`booking/user/${name}`)
+export const apiClient = axios.create({
+    baseURL: 'http://localhost:8082'
+})
 
-export const addBookingForUser = (name, booking) => apiClient.post(`booking/request/${name}`, booking)
+export const getBookingsForUser = () => apiClient.get(`booking`)
+
+export const addBookingForUser = (booking) => apiClient.post(`booking/request`, booking)

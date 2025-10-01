@@ -1,0 +1,23 @@
+{
+  "groups": [
+    {
+      "name": "jwt",
+      "type": "auth.security.config.JwtProperties",
+      "sourceType": "auth.security.config.JwtProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.booking.cab.frontend.origin",
+      "type": "java.lang.String",
+      "description": "The url for 'com.booking.cab.frontend.origin'"
+    },
+    {
+      "name": "jwt.secret",
+      "type": "java.lang.String",
+      "description": "Base64-encoded HMAC secret used for symmetric JWT verification (HS256).",
+      "sourceType": "auth.security.config.JwtProperties"
+    }
+  ],
+  "hints": []
+}

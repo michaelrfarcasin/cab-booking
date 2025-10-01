@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { addBookingForUser } from './api/BookingApiService'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { useState } from 'react'
-import { useAuth } from './security/AuthContext'
 
 const BookingComponent = () => {
     const [pickUpLatitude] = useState('')
@@ -11,8 +10,6 @@ const BookingComponent = () => {
     const [dropOffLatitude] = useState('')
     const [dropOffLongitude] = useState('')
     
-    const authContext = useAuth()
-    const username = authContext.username
     const navigate = useNavigate()
 
     const onSubmit = (values) => {
@@ -24,7 +21,7 @@ const BookingComponent = () => {
             dropOffLongitude: values.dropOffLongitude
         }
 
-        addBookingForUser(username, booking)
+        addBookingForUser(booking)
             .then(response => navigate('/'))
             .catch(error => console.error(error))
     }

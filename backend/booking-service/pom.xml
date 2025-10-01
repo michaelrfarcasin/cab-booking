@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.5</version>
+		<version>3.2.12</version>
 		<relativePath/>
 	</parent>
 	<groupId>com.booking</groupId>
@@ -15,7 +15,7 @@
 	<description>In this project, the main objective is to help customers in booking a cab to reach their destination 
 with pick-up as their preferred location. The application fetches your pick-up location and asks you 
 to enter the drop location, when entered, finds a cab driver nearby and even tells you the calculated 
-time the cab will take to drop you at the location. </description>
+time the cab will take to drop you at the location.</description>
 	<properties>
 		<java.version>21</java.version>
 	</properties>

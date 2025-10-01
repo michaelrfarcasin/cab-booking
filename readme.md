@@ -1,10 +1,15 @@
 # Setup
 
-$ docker-compose build
-$ docker-compose up -d
+```
+docker-compose build
+docker-compose up -d
+```
 
 When you're done:  
-$ docker-compose down
+
+```
+docker-compose down
+```
 
 # Deployment
 

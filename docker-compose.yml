@@ -1,12 +1,16 @@
 services:
     mysql-auth:
-        build:
-            context: ./mysql/auth
-            dockerfile: ./Dockerfile
+        image: mysql:8-oracle
+        restart: always
         ports:
             - "3307:3306"
         networks:
             - cab-booking
+        environment:
+            MYSQL_DATABASE: auth-database
+            MYSQL_ROOT_PASSWORD: dummypassword
+            MYSQL_USER: auth-user
+            MYSQL_PASSWORD: dummypassword
         volumes:
             - ./mysql/auth/sql-scripts:/docker-entrypoint-initdb.d
         healthcheck:
@@ -15,13 +19,17 @@ services:
             timeout: 5s
             retries: 10
     mysql-booking:
-        build:
-            context: ./mysql/booking
-            dockerfile: ./Dockerfile
+        image: mysql:8-oracle
+        restart: always
         ports:
             - "3308:3306"
         networks:
             - cab-booking
+        environment:
+            MYSQL_DATABASE: booking-database
+            MYSQL_ROOT_PASSWORD: dummypassword
+            MYSQL_USER: booking-user
+            MYSQL_PASSWORD: dummypassword
         volumes:
             - ./mysql/booking/sql-scripts:/docker-entrypoint-initdb.d
         healthcheck:

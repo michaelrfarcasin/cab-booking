@@ -1,5 +1,0 @@
-com\booking\cab\web\integration\BookingControllerTest.class
-com\booking\cab\domain\usecase\unit\CalculateTravelTimeTest.class
-com\booking\cab\domain\usecase\unit\GetClosestDriverTest.class
-com\booking\cab\CabBookingSystemApplicationTests.class
-com\booking\cab\domain\usecase\unit\CreateBookingTest.class

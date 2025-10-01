@@ -7,16 +7,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import auth.exception.UserNotFoundException;
 import auth.gateway.UserGatewayInterface;
 import auth.repository.entity.User;
 import auth.security.datastructure.JwtTokenRequest;
@@ -43,15 +39,6 @@ public class UserController {
 		this.tokenService = tokenService;
 		this.authenticationManager = authenticationManager;
 	}
-
-	@GetMapping("/{id}")
-	public User getUser(@PathVariable int id) {
-		User user = userGateway.findById(id);
-		if (user == null) {
-			throw new UserNotFoundException("Id: " + id);
-		}
-		return user;
-	}
 	
 	@PostMapping("/register")
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
@@ -74,11 +61,5 @@ public class UserController {
 			return ResponseEntity.ok(token);
 		}
 		throw new UsernameNotFoundException("Invalid user request");
-	}
-
-	@DeleteMapping("/{id}")
-	public ResponseEntity<User> deleteUser(@PathVariable int id) {
-		userGateway.deleteById(id);
-		return ResponseEntity.ok().build();
 	}
 }

@@ -60,6 +60,12 @@ services:
             - "3000:3000"
         networks:
             - cab-booking
+        environment:
+            # For development the browser runs on the host and must reach the backend
+            # via the host-mapped ports. Use localhost:8081 and localhost:8082 which are
+            # mapped to the auth-service and booking-service container ports respectively.
+            REACT_APP_AUTH_API_URL: http://localhost:8081
+            REACT_APP_BOOKING_API_URL: http://localhost:8082
     auth-service:
         build: 
             context: ./backend/auth-service

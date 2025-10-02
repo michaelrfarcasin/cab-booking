@@ -22,6 +22,12 @@ const LoginComponent = () => {
         setShowErrorMessage(true)
     }
 
+    const handleKeyDown = async (event) => {
+        if (event.key === 'Enter') {
+            handleSubmit();
+        }
+    }
+
     return (
         <div className="Login">
             {showErrorMessage && <div className="errorMessage">
@@ -30,11 +36,23 @@ const LoginComponent = () => {
             <div className="LoginForm">
                 <div>
                     <label>User Name</label>
-                    <input type="text" name="username" value={username} onChange={handleUsernameChange} />
+                    <input 
+                        type="text"
+                        name="username"
+                        value={username}
+                        onChange={handleUsernameChange}
+                        onKeyDown={handleKeyDown}
+                    />
                 </div>
                 <div>
                     <label>Password</label>
-                    <input type="password" name="password" value={password} onChange={handlePasswordChange} />
+                    <input 
+                        type="password"
+                        name="password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        onKeyDown={handleKeyDown}
+                    />
                 </div>
                 <div>
                     <button type="submit" onClick={handleSubmit}>Log in</button>

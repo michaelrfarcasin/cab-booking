@@ -1,3 +1,18 @@
+x-frontend-origin-url: &frontend-origin-url
+    http://localhost:3000
+
+x-auth-db-user: &auth-db-user
+    auth-user
+
+x-auth-db-password: &auth-db-password
+    dummypassword
+
+x-booking-db-user: &booking-db-user
+    booking-user
+
+x-booking-db-password: &booking-db-password
+    dummypassword
+
 services:
     mysql-auth:
         image: mysql:8-oracle
@@ -9,8 +24,8 @@ services:
         environment:
             MYSQL_DATABASE: auth-database
             MYSQL_ROOT_PASSWORD: dummypassword
-            MYSQL_USER: auth-user
-            MYSQL_PASSWORD: dummypassword
+            MYSQL_USER: *auth-db-user
+            MYSQL_PASSWORD: *auth-db-password
         volumes:
             - ./mysql/auth/sql-scripts:/docker-entrypoint-initdb.d
         healthcheck:
@@ -28,8 +43,8 @@ services:
         environment:
             MYSQL_DATABASE: booking-database
             MYSQL_ROOT_PASSWORD: dummypassword
-            MYSQL_USER: booking-user
-            MYSQL_PASSWORD: dummypassword
+            MYSQL_USER: *booking-db-user
+            MYSQL_PASSWORD: *booking-db-password
         volumes:
             - ./mysql/booking/sql-scripts:/docker-entrypoint-initdb.d
         healthcheck:
@@ -56,6 +71,13 @@ services:
         depends_on:
             mysql-auth:
                 condition: service_healthy
+        environment:
+            DB_URL: jdbc:mysql://mysql-auth:3306/auth-database
+            RDS_USERNAME: *auth-db-user
+            RDS_PASSWORD: *auth-db-password
+            FRONTEND_ORIGIN: *frontend-origin-url
+        volumes:
+            - ./secrets/jwt_secret:/run/secrets/jwt_secret:ro
     booking-service:
         build: 
             context: ./backend/booking-service
@@ -67,6 +89,13 @@ services:
         depends_on:
             mysql-booking:
                 condition: service_healthy
+        environment:
+            DB_URL: jdbc:mysql://mysql-booking:3306/booking-database
+            RDS_USERNAME: *booking-db-user
+            RDS_PASSWORD: *booking-db-password
+            FRONTEND_ORIGIN: *frontend-origin-url
+        volumes:
+            - ./secrets/jwt_secret:/run/secrets/jwt_secret:ro
 
 networks:
     cab-booking:

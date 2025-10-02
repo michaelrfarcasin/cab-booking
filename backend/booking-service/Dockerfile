@@ -12,4 +12,6 @@ RUN mvn -f /home/booking-service/pom.xml clean package
 FROM openjdk:21-jdk-slim
 EXPOSE 8080
 COPY --from=build /home/booking-service/target/*.jar booking-service.jar
-ENTRYPOINT [ "sh", "-c", "java -jar /booking-service.jar" ]
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

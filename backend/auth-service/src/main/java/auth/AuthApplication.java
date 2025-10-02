@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 public class AuthApplication {
-	@Value("${com.booking.cab.frontend.origin}")
+	@Value("${frontend.origin}")
 	private String frontendOrigin;
 
 	public static void main(String[] args) {

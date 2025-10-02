@@ -1,8 +1,7 @@
 # Setup
 
 ```
-docker-compose build
-docker-compose up -d
+docker-compose up -d --build
 ```
 
 When you're done:  
@@ -73,96 +72,43 @@ Guide I followed to start this project: https://www.udemy.com/course/spring-boot
 
 ## Providing the JWT secret safely
 
-The project reads a base64-encoded HMAC secret from the `jwt.secret` property as a demonstration. This wouldn't be appropriate for production code. Instead prefer one of the options below and reference the value in `application.properties` with property substitution, for example:
+The project reads a base64-encoded HMAC secret from the `jwt.secret` property (the application references it as `jwt.secret=${JWT_SECRET:}` by default). The repo includes a tiny startup script in each image that will:
 
-```
-jwt.secret=${JWT_SECRET:}
-```
+- prefer an already-set environment variable `JWT_SECRET` (this is how Elastic Beanstalk / ECS typically provide secrets),
+- otherwise read a file mounted at `/run/secrets/jwt_secret` and export it as `JWT_SECRET` before starting the JVM.
 
-Recommended ways to supply the secret at runtime:
+This makes the image portable: it works with environment variables (cloud platforms) and with Docker secrets / mounted files for local development.
 
-- Environment variable (local development or Docker):
+Quick examples (local development)
 
-    PowerShell:
-    ```powershell
-    $env:JWT_SECRET = 'BASE64_ENCODED_SECRET'
-    mvn spring-boot:run
-    ```
-
-    Or when running the JAR:
-    ```powershell
-    $env:JWT_SECRET='BASE64_ENCODED_SECRET'; java -jar target/cab-0.0.1-SNAPSHOT.jar
-    ```
-
-- Docker secret (recommended for Docker Compose / production):
-
-    1. Create a file containing the secret (outside source tree):
-         ```powershell
-         Set-Content -Path C:\secrets\jwt_secret.txt -Value 'BASE64_ENCODED_SECRET'
-         ```
-    2. Reference it in `docker-compose.yml` as a secret and mount into the container, or set an ENV var from the file in your container entrypoint.
-
-    Example `docker-compose.yml` snippet (compose v3.4+):
-
-    ```yaml
-    version: '3.8'
-    services:
-      booking-service:
-        build: ./backend/booking-service
-        secrets:
-          - jwt_secret
-        environment:
-          # the entrypoint script will export JWT_SECRET from the mounted secret file
-          - JWT_SECRET_FILE=/run/secrets/jwt_secret
-
-    secrets:
-      jwt_secret:
-        file: ./secrets/jwt_secret.txt  # point to an external file (keep out of repo)
-    ```
-
-    Minimal `Dockerfile` adjustments to expose the secret as an env var to the JVM (example):
-
-    ```dockerfile
-    FROM eclipse-temurin:21-jre
-
-    WORKDIR /app
-    COPY target/cab-0.0.1-SNAPSHOT.jar app.jar
-
-    # small entrypoint that exports the secret from the Docker secret file into an env var
-    COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-    RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
-    ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-    CMD ["java","-jar","/app/app.jar"]
-    ```
-
-    `docker-entrypoint.sh` (place next to Dockerfile, not checked into secrets):
-
-    ```sh
-    #!/bin/sh
-    # If the secret file is provided, export it as JWT_SECRET for the JVM to pick up
-    if [ -n "$JWT_SECRET_FILE" ] && [ -f "$JWT_SECRET_FILE" ]; then
-      export JWT_SECRET=$(cat "$JWT_SECRET_FILE")
-    fi
-
-    exec "$@"
-    ```
-
-- Kubernetes secret (recommended for k8s deployments):
-
-    Create a secret and mount as env var:
-    ```bash
-    kubectl create secret generic jwt-secret --from-literal=JWT_SECRET=BASE64_ENCODED_SECRET
-    # then reference in your Deployment spec as an env var from the secret
-    ```
-
-If you prefer not to change the properties file, you can also pass the property on the command line:
+- Run with an environment variable:
 
 ```powershell
-mvn -Djwt.secret=BASE64_ENCODED_SECRET spring-boot:run
+$env:JWT_SECRET='BASE64_ENCODED_SECRET'
+mvn spring-boot:run
 ```
 
-Security tips:
-- Rotate secrets regularly.
-- Use a secret manager (Azure Key Vault, AWS Secrets Manager, HashiCorp Vault) in production.
-- Keep the secret outside the repository and limit who can read it.
+- Run via `docker-compose` using a local file (the repo uses `/run/secrets/jwt_secret` as the path inside the container):
+
+```yaml
+services:
+  booking-service:
+    build: ./backend/booking-service
+    volumes:
+      - ./secrets/jwt_secret:/run/secrets/jwt_secret:ro
+    environment:
+      DB_URL: jdbc:mysql://mysql-booking:3306/booking-database
+      RDS_USERNAME: booking-user
+      RDS_PASSWORD: dummypassword
+```
+
+If you prefer to use Docker-managed secrets (Swarm or a secrets-capable runtime) you can use the `secrets:` stanza — the entrypoint script will still read `/run/secrets/jwt_secret` in that case.
+
+Elastic Beanstalk / ECS
+- For Beanstalk or ECS it's easiest to set `JWT_SECRET` in the platform's environment variables (the entrypoint script prefers the env var). That is the recommended production pattern.
+
+Security notes
+- Do not commit the secret file. Add `secrets/jwt_secret` to your `.gitignore`.
+- Prefer a secret manager (AWS Secrets Manager, Parameter Store, Vault) in production and inject secrets as environment variables or via the platform integration.
+
+If you need an example `docker-entrypoint.sh`, the repository contains one for each service that reads `/run/secrets/jwt_secret`, strips whitespace/CRLF, and exports `JWT_SECRET` before exec-ing the JVM.

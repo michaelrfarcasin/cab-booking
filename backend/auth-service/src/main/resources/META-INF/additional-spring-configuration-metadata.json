@@ -1,8 +1,8 @@
 {"properties": [
   {
-    "name": "com.booking.cab.frontend.origin",
+    "name": "frontend.origin",
     "type": "java.lang.String",
-    "description": "The url for 'com.booking.cab.frontend.origin'"
+    "description": "The url for 'frontend.origin'"
   },
   {
     "name": "jwt.secret",

@@ -1,5 +1,6 @@
+.vscode
 backend/auth-service/target
 backend/booking-service/target
 frontend/node_modules
 frontend/build
-.vscode/*
+secrets

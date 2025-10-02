@@ -12,4 +12,6 @@ RUN mvn -f /home/auth-service/pom.xml clean package
 FROM openjdk:21-jdk-slim
 EXPOSE 8080
 COPY --from=build /home/auth-service/target/*.jar auth-service.jar
-ENTRYPOINT [ "sh", "-c", "java -jar /auth-service.jar" ]
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

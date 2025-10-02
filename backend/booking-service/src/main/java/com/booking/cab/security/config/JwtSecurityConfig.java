@@ -53,7 +53,14 @@ public class JwtSecurityConfig {
             // Let Spring Boot try to configure the decoder (e.g. jwk-set-uri) if no secret provided
             return null;
         }
-        byte[] keyBytes = Base64.getDecoder().decode(base64Secret);
+        // sanitize: remove whitespace and CR/LF (files mounted from Windows may contain CRLF)
+        String sanitized = base64Secret.trim().replaceAll("\\s+", "");
+        byte[] keyBytes;
+        try {
+            keyBytes = Base64.getDecoder().decode(sanitized);
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException("Failed to decode jwt.secret as base64 — check the secret contents (no newlines or extra characters).", ex);
+        }
         SecretKey secretKey = new SecretKeySpec(keyBytes, 0, keyBytes.length, "HmacSHA256");
         return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
     }
